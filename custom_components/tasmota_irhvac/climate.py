@@ -40,7 +40,13 @@ from homeassistant.components.climate.const import (
     SWING_BOTH,
     SWING_HORIZONTAL,
     SWING_OFF,
-    SWING_VERTICAL
+    SWING_VERTICAL,
+    CURRENT_HVAC_OFF,
+    CURRENT_HVAC_HEAT,
+    CURRENT_HVAC_COOL,
+    CURRENT_HVAC_DRY,
+    CURRENT_HVAC_IDLE,
+    CURRENT_HVAC_FAN
 )
 
 from homeassistant.const import (
@@ -680,9 +686,20 @@ class TasmotaIrhvac(ClimateEntity, RestoreEntity):
     def hvac_action(self):
         """Return the current running hvac operation if supported.
 
-        Need to be one of CURRENT_HVAC_*.
+        Need to be one of CURRENT_HVAC_*.        
         """
-        return self._hvac_mode
+        hmodes = {
+          "heat": CURRENT_HVAC_HEAT,
+          "cool": CURRENT_HVAC_COOL,
+          "dry": CURRENT_HVAC_DRY,
+          "fan_only": CURRENT_HVAC_FAN,
+          "off": CURRENT_HVAC_OFF
+        }        
+
+        if self._hvac_mode in hmodes:
+            return hmodes[self._hvac_mode]
+        else:
+            return self._hvac_mode
 
     @property
     def target_temperature(self):
