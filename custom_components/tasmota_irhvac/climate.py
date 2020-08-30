@@ -845,7 +845,7 @@ class TasmotaIrhvac(ClimateEntity, RestoreEntity):
         if quiet not in ON_OFF_LIST:
             return
         self._quiet = quiet.lower()
-        if self._quiet == "on" && self._protocol == "FUJITSU_AC":
+        if self._quiet == "on" and self._protocol == "FUJITSU_AC":
             self._fan_mode = HVAC_FAN_MIN
         await self.async_send_cmd(True)
 
